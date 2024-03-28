@@ -1,5 +1,5 @@
-import 'package:quiz_app/src/common/data/quiz_data.dart';
-import 'package:quiz_app/src/common/data/quiz_repository.dart';
+import 'package:quiz_app/src/features/app/data/quiz_data.dart';
+import 'package:quiz_app/src/features/app/data/quiz_repository.dart';
 import 'package:quiz_app/src/common/util/dependencies.dart';
 import 'package:quiz_app/src/common/util/logger.dart';
 

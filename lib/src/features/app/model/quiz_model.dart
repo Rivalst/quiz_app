@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:quiz_app/src/common/model/quiz_options_model.dart';
+import 'package:quiz_app/src/features/app/model/quiz_options_model.dart';
 
 part 'quiz_model.freezed.dart';
 part 'quiz_model.g.dart';

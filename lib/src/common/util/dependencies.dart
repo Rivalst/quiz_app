@@ -1,4 +1,4 @@
-import 'package:quiz_app/src/common/data/quiz_repository.dart';
+import 'package:quiz_app/src/features/app/data/quiz_repository.dart';
 
 /// {@template dependencies}
 /// Dependencies container
