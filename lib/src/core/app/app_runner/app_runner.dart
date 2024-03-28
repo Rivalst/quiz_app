@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/common/util/bloc_observ.dart';
-import 'package:quiz_app/src/common/util/init.dart';
-import 'package:quiz_app/src/common/util/logger.dart';
-import 'package:quiz_app/src/features/app/widgets/app.dart';
-import 'package:quiz_app/src/features/app/widgets/app_error.dart';
+import 'package:quiz_app/src/core/app/widgets/app.dart';
+import 'package:quiz_app/src/core/app/widgets/app_error.dart';
+import 'package:quiz_app/src/core/util/bloc_observ.dart';
+import 'package:quiz_app/src/core/util/init.dart';
+import 'package:quiz_app/src/core/util/logger.dart';
 
 class AppRunner {
   Future<void> initializeAndRun() async {

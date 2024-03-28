@@ -1,5 +1,5 @@
-import 'package:quiz_app/src/features/app/data/quiz_data.dart';
-import 'package:quiz_app/src/features/app/model/quiz_model.dart';
+import 'package:quiz_app/src/core/app/data/quiz_data.dart';
+import 'package:quiz_app/src/core/app/model/quiz_model.dart';
 
 abstract interface class QuizRepository {
   Future<List<Quiz>> getAllQuizzes();

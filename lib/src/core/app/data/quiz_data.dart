@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:quiz_app/src/common/util/helpers.dart';
-import 'package:quiz_app/src/features/app/model/quiz_model.dart';
+import 'package:quiz_app/src/core/app/model/quiz_model.dart';
+import 'package:quiz_app/src/core/util/helpers.dart';
 
 abstract interface class QuizDataProvider {
   Future<List<Quiz>> getAllQuizzes();

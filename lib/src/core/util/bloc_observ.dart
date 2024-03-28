@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:quiz_app/src/common/util/logger.dart';
+import 'package:quiz_app/src/core/util/logger.dart';
 
 /// [BlocObserver] which logs all bloc state changes, errors and events.
 class AppBlocObserver extends BlocObserver {

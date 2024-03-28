@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/src/common/util/dependencies.dart';
+import 'package:quiz_app/src/core/util/dependencies.dart';
 
 class App extends StatelessWidget {
   final InitializationResult result;

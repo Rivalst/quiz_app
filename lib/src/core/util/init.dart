@@ -1,7 +1,7 @@
-import 'package:quiz_app/src/features/app/data/quiz_data.dart';
-import 'package:quiz_app/src/features/app/data/quiz_repository.dart';
-import 'package:quiz_app/src/common/util/dependencies.dart';
-import 'package:quiz_app/src/common/util/logger.dart';
+import 'package:quiz_app/src/core/app/data/quiz_data.dart';
+import 'package:quiz_app/src/core/app/data/quiz_repository.dart';
+import 'package:quiz_app/src/core/util/dependencies.dart';
+import 'package:quiz_app/src/core/util/logger.dart';
 
 /// {@template initialization_processor}
 /// A class which is responsible for processing initialization steps.
