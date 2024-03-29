@@ -42,28 +42,6 @@ class _QuizCardState extends State<QuizCard> {
         _isCorrect = isCorrect,
         _isVisible = isVisible;
 
-  void _startCountdown() {
-    const oneSecond = Duration(seconds: 1);
-    _timer = Timer.periodic(oneSecond, (Timer timer) {
-      if (_remainingSeconds <= 0) {
-        setState(() {
-          timer.cancel();
-          _isVisible = true;
-          _isCorrect = false;
-        });
-        if (widget.length - 1 > widget.index) {
-          widget.answered(false, context);
-        } else {
-          widget.showResult(false, context);
-        }
-      } else {
-        setState(() {
-          _remainingSeconds--;
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -162,7 +140,7 @@ class _QuizCardState extends State<QuizCard> {
                 ),
                 Opacity(
                   opacity: _isVisible ? 1.0 : 0,
-                  child: Answer(
+                  child: _Answer(
                     isCorrect: _isCorrect,
                     answer: _answer,
                   ),
@@ -173,6 +151,28 @@ class _QuizCardState extends State<QuizCard> {
         ),
       ),
     );
+  }
+
+  void _startCountdown() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (Timer timer) {
+      if (_remainingSeconds <= 0) {
+        setState(() {
+          timer.cancel();
+          _isVisible = true;
+          _isCorrect = false;
+        });
+        if (widget.length - 1 > widget.index) {
+          widget.answered(false, context);
+        } else {
+          widget.showResult(false, context);
+        }
+      } else {
+        setState(() {
+          _remainingSeconds--;
+        });
+      }
+    });
   }
 
   void _nextQuizHelper(QuizAnswer quiz) {
@@ -194,7 +194,7 @@ class _QuizCardState extends State<QuizCard> {
   }
 }
 
-class Answer extends StatelessWidget {
+class _Answer extends StatelessWidget {
   const Answer({
     required this.isCorrect,
     required this.answer,
