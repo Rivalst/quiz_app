@@ -69,7 +69,7 @@ class QuizPages extends StatelessWidget {
       );
     }
     _pageController.nextPage(
-      duration: const Duration(microseconds: 600),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeIn,
     );
   }
