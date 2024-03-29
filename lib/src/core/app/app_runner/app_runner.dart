@@ -29,12 +29,10 @@ class AppRunner {
         ));
       } catch (e, stackTrace) {
         logger.error('Initialization failed', error: e, stackTrace: stackTrace);
-        //TODO: NEED CHECK
+        // In this place we can ran app with error if init process was finished with error;
         runApp(
           const InitializationFailedApp(
-              // error: e,
-              // stackTrace: stackTrace,
-              // retryInitialization: initializeAndRun,
+              
               ),
         );
       } finally {
