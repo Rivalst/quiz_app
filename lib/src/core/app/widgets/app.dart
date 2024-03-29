@@ -24,6 +24,9 @@ class App extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(useMaterial3: true),
+        // also we can add different navigation for the app.
+        //
+        // for example (We can have only one navigator or we can use many navigator if it`s necessary)
         home: const Root(),
       ),
     );
