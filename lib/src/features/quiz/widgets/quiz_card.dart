@@ -183,7 +183,6 @@ class _QuizCardState extends State<QuizCard> {
 
 class _QuizQuestionWidget extends StatelessWidget {
   const _QuizQuestionWidget({
-    super.key,
     required this.widget,
   });
 
@@ -207,7 +206,6 @@ class _QuizQuestionWidget extends StatelessWidget {
 
 class _InfoQuizWidget extends StatelessWidget {
   const _InfoQuizWidget({
-    super.key,
     required this.widget,
     required int remainingSeconds,
   }) : _remainingSeconds = remainingSeconds;
@@ -248,7 +246,6 @@ class _Answer extends StatelessWidget {
   const _Answer({
     required this.isCorrect,
     required this.answer,
-    super.key,
   });
 
   final bool isCorrect;

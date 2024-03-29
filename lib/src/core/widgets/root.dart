@@ -18,11 +18,11 @@ class Root extends StatelessWidget {
           return const SplashScreen();
         },
         loaded: (quizzes) {
-          return QuizScreen();
+          return const QuizScreen();
         },
         error: (messages, _) {
           // in this place we can added error screen
-          return ColoredBox(color: Colors.red);
+          return const ColoredBox(color: Colors.red);
         },
       );
     });

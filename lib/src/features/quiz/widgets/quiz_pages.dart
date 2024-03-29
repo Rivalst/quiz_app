@@ -76,9 +76,7 @@ class QuizPages extends StatelessWidget {
 }
 
 class _HintWidget extends StatelessWidget {
-  const _HintWidget({
-    super.key,
-  });
+  const _HintWidget();
 
   @override
   Widget build(BuildContext context) {
