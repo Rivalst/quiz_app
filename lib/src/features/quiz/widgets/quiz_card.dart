@@ -29,7 +29,7 @@ class QuizCard extends StatefulWidget {
 class _QuizCardState extends State<QuizCard> {
   Timer? _timer;
   int _remainingSeconds;
-  bool _isVisible;
+  bool _isAnswered;
   bool _isCorrect;
   String _rightAnswer = '';
 
@@ -39,12 +39,13 @@ class _QuizCardState extends State<QuizCard> {
     bool isCorrect = false,
   })  : _remainingSeconds = startSeconds,
         _isCorrect = isCorrect,
-        _isVisible = isVisible;
+        _isAnswered = isVisible;
 
   @override
   void initState() {
     super.initState();
     _startCountdown();
+    _getRightAnswer();
   }
 
   @override
@@ -83,34 +84,16 @@ class _QuizCardState extends State<QuizCard> {
                 ),
                 const Spacer(),
                 Column(
-                  children: widget.quiz.answers.map((quiz) {
-                    if (quiz.isCorrect) {
-                      setState(() {
-                        _rightAnswer = quiz.answer;
-                      });
-                    }
-                    return SizedBox(
-                      width: double.infinity,
-                      height: 70,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: ElevatedButton(
-                          onPressed:
-                              _isVisible ? null : () => _nextQuizHelper(quiz),
-                          style: ElevatedButton.styleFrom(
-                            side: const BorderSide(
-                              width: 2.0,
-                              color: Color.fromARGB(255, 39, 100, 192),
-                            ),
-                          ),
-                          child: Text(quiz.answer),
-                        ),
-                      ),
+                  children: widget.quiz.answers.map((quizAnswer) {
+                    return _AnswerButton(
+                      answer: quizAnswer.answer,
+                      onPressed: () => _nextQuizHelper(quizAnswer),
+                      isAnswered: _isAnswered,
                     );
                   }).toList(),
                 ),
                 Opacity(
-                  opacity: _isVisible ? 1.0 : 0,
+                  opacity: _isAnswered ? 1.0 : 0,
                   child: _Answer(
                     isCorrect: _isCorrect,
                     answer: _rightAnswer,
@@ -130,7 +113,7 @@ class _QuizCardState extends State<QuizCard> {
       if (_remainingSeconds <= 0) {
         setState(() {
           timer.cancel();
-          _isVisible = true;
+          _isAnswered = true;
           _isCorrect = false;
         });
         if (widget.quizzesLength - 1 > widget.index) {
@@ -154,11 +137,22 @@ class _QuizCardState extends State<QuizCard> {
     });
   }
 
+  void _getRightAnswer() {
+    for (var answer in widget.quiz.answers) {
+      if (answer.isCorrect) {
+        setState(() {
+          _rightAnswer = answer.answer;
+        });
+        break;
+      }
+    }
+  }
+
   void _nextQuizHelper(QuizAnswer quiz) {
     if (widget.index < widget.quizzesLength - 1) {
       _timer?.cancel();
       setState(() {
-        _isVisible = true;
+        _isAnswered = true;
         _isCorrect = quiz.isCorrect;
       });
       widget.answered(
@@ -169,7 +163,7 @@ class _QuizCardState extends State<QuizCard> {
     } else {
       _timer?.cancel();
       setState(() {
-        _isVisible = true;
+        _isAnswered = true;
         _isCorrect = quiz.isCorrect;
       });
       widget.answered(
@@ -296,5 +290,55 @@ class _Answer extends StatelessWidget {
               ),
             ],
           );
+  }
+}
+
+class _AnswerButton extends StatefulWidget {
+  final String answer;
+  final Function onPressed;
+  final bool isAnswered;
+
+  const _AnswerButton({
+    required this.answer,
+    required this.onPressed,
+    required this.isAnswered,
+  });
+
+  @override
+  _AnswerButtonState createState() => _AnswerButtonState();
+}
+
+class _AnswerButtonState extends State<_AnswerButton> {
+  bool _isSelected = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 70,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: ElevatedButton(
+          onPressed: widget.isAnswered
+              ? () => null
+              : () {
+                  setState(() {
+                    _isSelected = true;
+                  });
+                  widget.onPressed();
+                },
+          style: ElevatedButton.styleFrom(
+              side: const BorderSide(
+                width: 2.0,
+                color: Colors.deepPurple,
+              ),
+              backgroundColor: _isSelected ? Colors.deepPurple : Colors.white,
+              foregroundColor: _isSelected ? Colors.white : Colors.deepPurple,
+              shadowColor: Colors.white,
+              surfaceTintColor: Colors.white),
+          child: Text(widget.answer),
+        ),
+      ),
+    );
   }
 }
