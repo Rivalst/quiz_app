@@ -4,11 +4,6 @@ import 'package:flutter/foundation.dart';
 import 'package:logging/logging.dart' as logging;
 
 /// Logger instance declared as global variable
-///
-/// Usage:
-/// ```dart
-/// logger.info('Hello World!');
-/// ```
 final Logger logger = LoggerLogging();
 
 /// Typedef for the log formatter
