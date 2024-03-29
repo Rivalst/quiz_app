@@ -41,36 +41,6 @@ class _QuizCardState extends State<QuizCard> {
         _isCorrect = isCorrect,
         _isVisible = isVisible;
 
-  void _startCountdown() {
-    const oneSecond = Duration(seconds: 1);
-    _timer = Timer.periodic(oneSecond, (Timer timer) {
-      if (_remainingSeconds <= 0) {
-        setState(() {
-          timer.cancel();
-          _isVisible = true;
-          _isCorrect = false;
-        });
-        if (widget.quizzesLength - 1 > widget.index) {
-          widget.answered(
-            isCorrect: false,
-            isLastQuiz: false,
-            context: context,
-          );
-        } else {
-          widget.answered(
-            isCorrect: false,
-            isLastQuiz: true,
-            context: context,
-          );
-        }
-      } else {
-        setState(() {
-          _remainingSeconds--;
-        });
-      }
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -163,10 +133,18 @@ class _QuizCardState extends State<QuizCard> {
           _isVisible = true;
           _isCorrect = false;
         });
-        if (widget.length - 1 > widget.index) {
-          widget.answered(false, context);
+        if (widget.quizzesLength - 1 > widget.index) {
+          widget.answered(
+            isCorrect: false,
+            isLastQuiz: false,
+            context: context,
+          );
         } else {
-          widget.showResult(false, context);
+          widget.answered(
+            isCorrect: false,
+            isLastQuiz: true,
+            context: context,
+          );
         }
       } else {
         setState(() {
@@ -267,7 +245,7 @@ class _InfoQuizWidget extends StatelessWidget {
 }
 
 class _Answer extends StatelessWidget {
-  const Answer({
+  const _Answer({
     required this.isCorrect,
     required this.answer,
     super.key,
