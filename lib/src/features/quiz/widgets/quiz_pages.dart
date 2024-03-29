@@ -27,30 +27,12 @@ class QuizPages extends StatelessWidget {
           return Column(
             children: [
               QuizCard(
-                length: quizzes.length,
+                quizzesLength: quizzes.length,
                 index: index,
                 quiz: quizzes[index],
-                answered: _buttonAnswerPressed,
-                showResult: _showResult,
+                answered: _quizAnswered,
               ),
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                  child: ElevatedButton(
-                    onPressed: () => null,
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey.withOpacity(0.6)),
-                    child: const Text(
-                      'Need hint?',
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              const _HintWidget(),
             ],
           );
         },
@@ -58,29 +40,15 @@ class QuizPages extends StatelessWidget {
     );
   }
 
-  void _buttonAnswerPressed(
-    bool isCorrect,
-    BuildContext context,
-  ) async {
+  void _quizAnswered({
+    required bool isCorrect,
+    required bool isLastQuiz,
+    required BuildContext context,
+  }) async {
     await Future.delayed(
       const Duration(seconds: 3),
     );
-    if (isCorrect) {
-      context.read<QuizScoreBloc>().add(const QuizScoreEvent.increment());
-    }
-    _pageController.nextPage(
-      duration: const Duration(microseconds: 600),
-      curve: Curves.easeIn,
-    );
-  }
 
-  void _showResult(
-    bool isCorrect,
-    BuildContext context,
-  ) async {
-    await Future.delayed(
-      const Duration(seconds: 3),
-    );
     final scoreBloc = context.read<QuizScoreBloc>();
 
     if (isCorrect) {
@@ -88,15 +56,47 @@ class QuizPages extends StatelessWidget {
     }
 
     // From the specifics of the event loop, we need it to wait for increment
-    await Future.delayed(
-      const Duration(seconds: 0),
-    );
+    await Future.delayed(Duration.zero);
 
-    final score = scoreBloc.state.count ?? 0;
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => Result(
-          score: score,
+    if (isLastQuiz) {
+      final score = scoreBloc.state.count ?? 0;
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => Result(
+            score: score,
+          ),
+        ),
+      );
+    }
+    _pageController.nextPage(
+      duration: const Duration(microseconds: 600),
+      curve: Curves.easeIn,
+    );
+  }
+}
+
+class _HintWidget extends StatelessWidget {
+  const _HintWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 50,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32.0),
+        child: ElevatedButton(
+          onPressed: () => null,
+          style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey.withOpacity(0.6)),
+          child: const Text(
+            'Need hint?',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
         ),
       ),
     );

@@ -8,20 +8,19 @@ class QuizCard extends StatefulWidget {
   const QuizCard({
     required this.quiz,
     required this.index,
-    required this.length,
+    required this.quizzesLength,
     required this.answered,
-    required this.showResult,
     super.key,
   });
 
   final Quiz quiz;
   final int index;
-  final int length;
-  final Function(bool, BuildContext) answered;
-  final Function(
-    bool,
-    BuildContext context,
-  ) showResult;
+  final int quizzesLength;
+  final Function({
+    required bool isCorrect,
+    required bool isLastQuiz,
+    required BuildContext context,
+  }) answered;
 
   @override
   State<QuizCard> createState() => _QuizCardState();
@@ -32,7 +31,7 @@ class _QuizCardState extends State<QuizCard> {
   int _remainingSeconds;
   bool _isVisible;
   bool _isCorrect;
-  String _answer = '';
+  String _rightAnswer = '';
 
   _QuizCardState({
     int startSeconds = 40,
@@ -41,6 +40,36 @@ class _QuizCardState extends State<QuizCard> {
   })  : _remainingSeconds = startSeconds,
         _isCorrect = isCorrect,
         _isVisible = isVisible;
+
+  void _startCountdown() {
+    const oneSecond = Duration(seconds: 1);
+    _timer = Timer.periodic(oneSecond, (Timer timer) {
+      if (_remainingSeconds <= 0) {
+        setState(() {
+          timer.cancel();
+          _isVisible = true;
+          _isCorrect = false;
+        });
+        if (widget.quizzesLength - 1 > widget.index) {
+          widget.answered(
+            isCorrect: false,
+            isLastQuiz: false,
+            context: context,
+          );
+        } else {
+          widget.answered(
+            isCorrect: false,
+            isLastQuiz: true,
+            context: context,
+          );
+        }
+      } else {
+        setState(() {
+          _remainingSeconds--;
+        });
+      }
+    });
+  }
 
   @override
   void initState() {
@@ -75,47 +104,19 @@ class _QuizCardState extends State<QuizCard> {
             ),
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Question ${widget.index + 1} of ${widget.length}',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.alarm,
-                          color: Colors.purple,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                            '00:${_remainingSeconds.toString().padLeft(2, '0')}'),
-                      ],
-                    ),
-                  ],
+                _InfoQuizWidget(
+                  widget: widget,
+                  remainingSeconds: _remainingSeconds,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Text(
-                    widget.quiz.question,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24,
-                    ),
-                  ),
+                _QuizQuestionWidget(
+                  widget: widget,
                 ),
                 const Spacer(),
                 Column(
                   children: widget.quiz.answers.map((quiz) {
                     if (quiz.isCorrect) {
                       setState(() {
-                        _answer = quiz.answer;
+                        _rightAnswer = quiz.answer;
                       });
                     }
                     return SizedBox(
@@ -142,7 +143,7 @@ class _QuizCardState extends State<QuizCard> {
                   opacity: _isVisible ? 1.0 : 0,
                   child: _Answer(
                     isCorrect: _isCorrect,
-                    answer: _answer,
+                    answer: _rightAnswer,
                   ),
                 )
               ],
@@ -176,21 +177,92 @@ class _QuizCardState extends State<QuizCard> {
   }
 
   void _nextQuizHelper(QuizAnswer quiz) {
-    if (widget.index < widget.length - 1) {
+    if (widget.index < widget.quizzesLength - 1) {
       _timer?.cancel();
       setState(() {
         _isVisible = true;
         _isCorrect = quiz.isCorrect;
       });
-      widget.answered(quiz.isCorrect, context);
+      widget.answered(
+        isCorrect: quiz.isCorrect,
+        isLastQuiz: false,
+        context: context,
+      );
     } else {
       _timer?.cancel();
       setState(() {
         _isVisible = true;
         _isCorrect = quiz.isCorrect;
       });
-      widget.showResult(quiz.isCorrect, context);
+      widget.answered(
+        isCorrect: quiz.isCorrect,
+        isLastQuiz: true,
+        context: context,
+      );
     }
+  }
+}
+
+class _QuizQuestionWidget extends StatelessWidget {
+  const _QuizQuestionWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final QuizCard widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Text(
+        widget.quiz.question,
+        softWrap: true,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoQuizWidget extends StatelessWidget {
+  const _InfoQuizWidget({
+    super.key,
+    required this.widget,
+    required int remainingSeconds,
+  }) : _remainingSeconds = remainingSeconds;
+
+  final QuizCard widget;
+  final int _remainingSeconds;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          'Question ${widget.index + 1} of ${widget.quizzesLength}',
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14,
+          ),
+        ),
+        Row(
+          children: [
+            const Icon(
+              Icons.alarm,
+              color: Colors.purple,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text('00:${_remainingSeconds.toString().padLeft(2, '0')}'),
+          ],
+        ),
+      ],
+    );
   }
 }
 
