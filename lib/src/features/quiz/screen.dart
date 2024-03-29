@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app/src/core/bloc/quizzes_bloc.dart';
-import 'package:quiz_app/src/features/quizs/bloc/quiz_score_bloc.dart';
-import 'package:quiz_app/src/features/quizs/widgets/quiz_pages.dart';
+import 'package:quiz_app/src/features/quiz/bloc/quiz_score_bloc.dart';
+import 'package:quiz_app/src/features/quiz/widgets/quiz_pages.dart';
+
 
 class QuizScreen extends StatelessWidget {
   const QuizScreen({super.key});

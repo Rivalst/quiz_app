@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app/src/core/app/model/quiz_model.dart';
-import 'package:quiz_app/src/features/quizs/bloc/quiz_score_bloc.dart';
-import 'package:quiz_app/src/features/quizs/widgets/quiz_card.dart';
+import 'package:quiz_app/src/features/quiz/bloc/quiz_score_bloc.dart';
+import 'package:quiz_app/src/features/quiz/widgets/quiz_card.dart';
+
 import 'package:quiz_app/src/features/result/screen.dart';
 
 class QuizPages extends StatelessWidget {

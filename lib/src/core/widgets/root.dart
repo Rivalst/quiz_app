@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app/src/core/bloc/quizzes_bloc.dart';
-import 'package:quiz_app/src/features/quizs/screen.dart';
+import 'package:quiz_app/src/features/quiz/screen.dart';
 import 'package:quiz_app/src/features/splash/screen.dart';
 
 class Root extends StatelessWidget {
