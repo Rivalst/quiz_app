@@ -82,10 +82,15 @@ class QuizPages extends StatelessWidget {
       const Duration(seconds: 3),
     );
     final scoreBloc = context.read<QuizScoreBloc>();
-    
+
     if (isCorrect) {
       scoreBloc.add(const QuizScoreEvent.increment());
     }
+
+    // From the specifics of the event loop, we need it to wait for increment
+    await Future.delayed(
+      const Duration(seconds: 0),
+    );
 
     final score = scoreBloc.state.count ?? 0;
     Navigator.of(context).pushReplacement(
